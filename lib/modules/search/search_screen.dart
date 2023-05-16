@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class SittingsScreen extends StatelessWidget {
+class SearchScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(appBar: AppBar(),
-        body: Center(child: Text('Settings Screen', style: TextStyle(fontWeight: FontWeight.bold,),)));
+        body: Center(child: Text('Search Screen', style: TextStyle(fontWeight: FontWeight.bold,),)));
   }
 }

@@ -9,13 +9,12 @@ import 'package:shop_app/modules/settings/settings_screen.dart';
 import 'package:shop_app/shared/network/remote/dio_helper.dart';
 
 import '../../models/categories_model.dart';
-import '../../shared/componentes/constanse.dart';
+import '../../shared/components/constants.dart';
 import '../../shared/network/end_points.dart';
 
 class AppCubit extends Cubit<AppStates>{
   AppCubit() :super (AppInitialState());
   static AppCubit get(context) => BlocProvider.of(context);
-
   int currentIndex=0;
 
   List<Widget> appScreens = [

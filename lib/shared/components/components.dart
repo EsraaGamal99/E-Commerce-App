@@ -31,9 +31,7 @@ Widget defaultButton({
         ),
       ),
       child: MaterialButton(
-        onPressed: () {
-          onPressed();
-        },
+        onPressed: () {},
         child: Text(
           isUpperCase ? text.toUpperCase() : text,
           style: TextStyle(
@@ -42,6 +40,24 @@ Widget defaultButton({
         ),
       ),
     );
+
+void navigateTo(context, widget) {
+  Navigator.push(
+    context,
+    MaterialPageRoute(
+      builder: (context) => widget,
+    ),
+  );
+}
+
+void navigateAndFinish(context, widget) {
+  Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
+          (route) => false);
+}
 
 Widget defaultFormField({
   @required TextEditingController controller,
@@ -83,40 +99,18 @@ Widget defaultFormField({
       ),
     );
 
-void navigateTo(context, widget) {
-  Navigator.push(
-    context,
-    MaterialPageRoute(
-      builder: (context) => widget,
-    ),
-  );
+void showToast({
+  @required String msg,
+  @required color
 }
-
-void navigateAndFinish(context, widget) {
-  Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(
-        builder: (context) => widget,
-      ),
-          (route) => false);
-}
-
-void toast (
-{
- @required Color
-backgroundColor
-,
-@required String msg
-,
-ToastGravity gravity = ToastGravity.BOTTOM,
-}){
+    ){
   Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_LONG,
-      gravity: gravity,
+      gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 5,
-      backgroundColor: backgroundColor,
-      textColor: Colors.white,
-      fontSize: 16.0
+      backgroundColor: Colors.red,
+    textColor: color,
+    fontSize: 16.0,
   );
 }

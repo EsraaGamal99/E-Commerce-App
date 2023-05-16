@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/shared/componentes/componentes.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../shared/components/components.dart';
 import '../../shared/style/colors.dart';
 import '../login/login_screen.dart';
 

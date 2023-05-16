@@ -29,6 +29,15 @@ ThemeData lightTheme = ThemeData(
       statusBarIconBrightness: Brightness.dark,
     ),
   ),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: defaultColor,
+    type: BottomNavigationBarType.fixed,
+    selectedItemColor: Colors.white,
+    unselectedItemColor: Colors.grey,
+    elevation: 20.0,
+
+  ),
+
 
   fontFamily: 'jannah',
   primarySwatch: defaultColor,
@@ -38,6 +47,14 @@ ThemeData lightTheme = ThemeData(
 ThemeData darkTheme = ThemeData(
   scaffoldBackgroundColor: Color(0xFF333739),
   //textTheme: TextTheme(),
+  bottomNavigationBarTheme: BottomNavigationBarThemeData(
+    backgroundColor: Colors.red,
+    type: BottomNavigationBarType.fixed,
+    selectedItemColor: defaultColor,
+    unselectedItemColor: Colors.grey,
+    elevation: 20.0,
+
+  ),
   appBarTheme: AppBarTheme(
     backgroundColor: Color(0xFF333739),
     titleSpacing: 20.0,

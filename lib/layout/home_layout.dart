@@ -3,8 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/app_cubit/cubit.dart';
 import 'package:shop_app/layout/app_cubit/states.dart';
 
+import '../modules/login/login_screen.dart';
 import '../modules/search/search_screen.dart';
 import '../shared/components/components.dart';
+import '../shared/components/constants.dart';
+import '../shared/network/local/cache_helper.dart';
 
 class HomeScreen extends StatelessWidget {
 
@@ -27,7 +30,9 @@ class HomeScreen extends StatelessWidget {
                   Icons.search,
                 ),
                 onPressed: () {
-                  navigateTo(context, SearchScreen(),);
+                  CacheHelper.removeData(key: 'token');
+                  CacheHelper.removeData(key: 'onBoarding');
+                  navigateAndFinish(context, LoginScreen());                 // navigateTo(context, SearchScreen(),);
                 },
               ),
             ],

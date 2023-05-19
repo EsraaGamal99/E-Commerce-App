@@ -2,17 +2,13 @@ import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
 class DioHelper {
-//https://www.getpostman.com/collections/94db931dc503afd508a5
   static Dio dio;
 
-  static init() {
+  static init()
+  {
     dio = Dio(
       BaseOptions(
         baseUrl: 'https://student.valuxapps.com/api/',
-        //queryParameters: '',
-        // headers: {
-        //   'Content-Type': 'application/json',
-        // },
         receiveDataWhenStatusError: true,
       ),
     );
@@ -20,17 +16,18 @@ class DioHelper {
 
   static Future<Response> getData({
     @required String url,
-     Map<String, dynamic> query,
+    Map<String, dynamic> query,
     String lang = 'en',
     String token,
-  }) async {
-
+  }) async
+  {
     dio.options.headers =
     {
       'lang':lang,
+      'Authorization': token??'',
       'Content-Type': 'application/json',
-      'Authorization':token??'',
     };
+
     return await dio.get(
       url,
       queryParameters: query,
@@ -43,18 +40,18 @@ class DioHelper {
     Map<String, dynamic> query,
     String lang = 'en',
     String token,
-
-  }) async {
-
-    dio.options.headers = {
+  }) async
+  {
+    dio.options.headers =
+    {
       'lang':lang,
+      'Authorization': token??'',
       'Content-Type': 'application/json',
-      'Authorization':token??'',
     };
 
-    return await dio.post(
-        url,
-        queryParameters: query,
+    return dio.post(
+      url,
+      queryParameters: query,
       data: data,
     );
   }

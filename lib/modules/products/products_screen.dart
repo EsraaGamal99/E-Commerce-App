@@ -6,6 +6,7 @@ import 'package:shop_app/layout/app_cubit/cubit.dart';
 import 'package:shop_app/layout/app_cubit/states.dart';
 import 'package:shop_app/models/categories_model.dart';
 import 'package:shop_app/models/home_model.dart';
+import 'package:shop_app/shared/components/components.dart';
 
 import '../../shared/style/colors.dart';
 
@@ -14,11 +15,18 @@ class ProductsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     AppCubit cubit = AppCubit.get(context);
     return BlocConsumer<AppCubit, AppStates>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is AppSuccessFavoritesState) {
+          if (!state.model.status) {
+            showToast(msg: state.model.message, color: Colors.red);
+          }
+        }
+      },
       builder: (context, state) {
         return ConditionalBuilder(
-          condition: (cubit.homeModel != null && cubit.categoriesModel !=null),
-          builder: (context) => productsBuilder(cubit.homeModel,cubit.categoriesModel),
+          condition: (cubit.homeModel != null && cubit.categoriesModel != null),
+          builder: (context) =>
+              productsBuilder(cubit.homeModel, cubit.categoriesModel, context),
           fallback: (context) => Center(child: CircularProgressIndicator()),
         );
       },
@@ -26,21 +34,29 @@ class ProductsScreen extends StatelessWidget {
   }
 }
 
-Widget productsBuilder(HomeModel model, CategoriesModel categoriesModel) => SingleChildScrollView(
+Widget productsBuilder(
+        HomeModel model, CategoriesModel categoriesModel, context) =>
+    SingleChildScrollView(
       physics: BouncingScrollPhysics(),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CarouselSlider(
-            items: model.data.banners
-                .map(
-                  (e) => Image(
-                    image: NetworkImage('${e.image}'),
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                  ),
-                )
-                .toList(),
+            items: bannerImages.map(
+            (e) => Image(
+              image: AssetImage('${e.image}'),
+              width: double.infinity,
+              fit: BoxFit.cover,
+            ),
+      ).toList(),
+            // model.data.banners
+            //     .map(
+            //       (e) => Image(
+            //         image: NetworkImage('${e.image}'),
+            //         width: double.infinity,
+            //         fit: BoxFit.cover,
+            //       ),
+            // ).toList(),
             options: CarouselOptions(
               autoPlay: true,
               autoPlayAnimationDuration: Duration(seconds: 1),
@@ -54,7 +70,6 @@ Widget productsBuilder(HomeModel model, CategoriesModel categoriesModel) => Sing
               viewportFraction: 1.0,
             ),
           ),
-
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20.0),
             child: Column(
@@ -70,17 +85,20 @@ Widget productsBuilder(HomeModel model, CategoriesModel categoriesModel) => Sing
                 SizedBox(
                   height: 10,
                 ),
-
                 Container(
                   width: double.infinity,
                   height: 100.0,
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
-                    itemBuilder: (context, index) => categoriesItems(categoriesModel.data.dataModel[index],),
-                    separatorBuilder: (context, index) => SizedBox(width: 10.0,),
-                    itemCount: categoriesModel.data.dataModel.length,),
+                    itemBuilder: (context, index) => categoriesItems(
+                      categoriesModel.data.dataModel[index],
+                    ),
+                    separatorBuilder: (context, index) => SizedBox(
+                      width: 10.0,
+                    ),
+                    itemCount: categoriesModel.data.dataModel.length,
+                  ),
                 ),
-
                 SizedBox(
                   height: 20,
                 ),
@@ -94,7 +112,6 @@ Widget productsBuilder(HomeModel model, CategoriesModel categoriesModel) => Sing
               ],
             ),
           ),
-
           Container(
             color: defaultColor,
             child: GridView.count(
@@ -106,9 +123,7 @@ Widget productsBuilder(HomeModel model, CategoriesModel categoriesModel) => Sing
               childAspectRatio: 1 / 1.56,
               children: List.generate(
                 model.data.products.length,
-                (index) => buildProduct(
-                  model.data.products[index],
-                ),
+                (index) => buildProduct(model.data.products[index], context),
               ),
             ),
           ),
@@ -116,31 +131,32 @@ Widget productsBuilder(HomeModel model, CategoriesModel categoriesModel) => Sing
       ),
     );
 
-Widget categoriesItems(DataModel model) =>  Stack(
-  alignment: AlignmentDirectional.bottomStart,
-  children: [
-    Image(
-      image: NetworkImage(model.image),
-      height: 100.0,
-      width: 100.0,
-    ),
-    Container(
-      color: Colors.black.withOpacity(
-        0.8,
-      ),
-      child: Text(
-        model.name,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-        textAlign: TextAlign.center,
-        style: TextStyle(
-          color: Colors.white,
+Widget categoriesItems(DataModel model) => Stack(
+      alignment: AlignmentDirectional.bottomStart,
+      children: [
+        Image(
+          image: NetworkImage(model.image),
+          height: 100.0,
+          width: 100.0,
         ),
-      ),
-    ),
-  ],
-);
-Widget buildProduct(ProductModel model) => Container(
+        Container(
+          color: Colors.black.withOpacity(
+            0.8,
+          ),
+          child: Text(
+            model.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+        ),
+      ],
+    );
+
+Widget buildProduct(ProductModel model, context) => Container(
       color: Colors.white,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -205,8 +221,21 @@ Widget buildProduct(ProductModel model) => Container(
                       ),
                     Spacer(),
                     IconButton(
-                      onPressed: () {},
-                      icon: Icon(Icons.favorite_border),
+                      onPressed: () {
+                        AppCubit.get(context).changeFavorite(model.id);
+                      },
+                      icon: CircleAvatar(
+                        backgroundColor:
+                            AppCubit.get(context).favorites[model.id]
+                                ? favColor
+                                : defaultColor,
+                        radius: 15.0,
+                        child: Icon(
+                          Icons.favorite_border,
+                          color: Colors.white,
+                          size: 17.0,
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -216,3 +245,14 @@ Widget buildProduct(ProductModel model) => Container(
         ],
       ),
     );
+
+List<BannerImagesModel> bannerImages=[
+  BannerImagesModel(image: 'assets/images/a1.1.jpg'),
+  BannerImagesModel(image: 'assets/images/a1.2.jpg'),
+  BannerImagesModel(image: 'assets/images/a1.3.jpg'),
+  BannerImagesModel(image: 'assets/images/a1.4.jpg'),
+  BannerImagesModel(image: 'assets/images/a1.5.jpg'),
+
+
+
+];

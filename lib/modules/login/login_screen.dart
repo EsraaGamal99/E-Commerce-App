@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/home_layout.dart';
 
 import '../../shared/components/components.dart';
+import '../../shared/components/constants.dart';
 import '../../shared/network/local/cache_helper.dart';
 import '../register/register_screen.dart';
 import 'login_cubit/cubit.dart';
@@ -25,13 +26,11 @@ class LoginScreen extends StatelessWidget {
           if (state is LoginsSuccessState) {
             if (state.loginModel.status) {
 
-              print(state.loginModel.message);
-              print(state.loginModel.data.token);
-
               CacheHelper.saveData(
                 key: 'token',
                 value: state.loginModel.data.token,
               ).then((value) {
+                tokenID = state.loginModel.data.token;
                 navigateAndFinish(
                   context,
                   HomeScreen(),

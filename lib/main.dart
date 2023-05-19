@@ -21,15 +21,16 @@ void main() async{
   DioHelper.init();
   await CacheHelper.init();
 
-
   Widget widget;
 
   bool onBoarding = CacheHelper.getData(key: 'onBoarding');
-  token = CacheHelper.getData(key: 'token');
-
+  tokenID = CacheHelper.getData(key: 'token');
+if(tokenID != null)
+  print('THE TOKEN ////////////'+ tokenID);
+else print('////////////// THE TOKEN IS NULL //////////////');
   if(onBoarding != null)
   {
-    if(token != null) widget = HomeScreen();
+    if(tokenID != null) widget = HomeScreen();
     else widget = LoginScreen();
   } else
   {
@@ -50,7 +51,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => AppCubit()..getHomeData()..getCategoriesData(),
+      create: (context) => AppCubit()..getHomeData()..getCategoriesData()..getFavorites(),
       child: BlocConsumer<AppCubit,AppStates>(
         listener: (context, state) => {},
         builder: (context, state) =>  MaterialApp(

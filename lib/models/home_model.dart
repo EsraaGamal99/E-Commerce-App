@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 class HomeModel {
   bool status;
   DataHomeModel data;
@@ -29,10 +31,12 @@ class DataHomeModel{
 class BannerModel{
   int id;
   String image;
+  final String bannerImage ='';
 
   BannerModel.FromJson(Map<String , dynamic> json){
     id = json['id'];
     image = json['image'];
+    this.bannerImage;
   }
 }
 
@@ -58,4 +62,13 @@ class ProductModel{
       inFavorites = json['in_favorites'];
       inCart = json['in_cart'];
     }
+}
+
+class BannerImagesModel {
+
+  final String image;
+
+  BannerImagesModel({
+    @required this.image,
+  });
 }

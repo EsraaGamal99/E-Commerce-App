@@ -31,7 +31,9 @@ Widget defaultButton({
         ),
       ),
       child: MaterialButton(
-        onPressed: () {},
+        onPressed: () {
+          onPressed();
+        },
         child: Text(
           isUpperCase ? text.toUpperCase() : text,
           style: TextStyle(
@@ -109,8 +111,8 @@ void showToast({
       toastLength: Toast.LENGTH_LONG,
       gravity: ToastGravity.BOTTOM,
       timeInSecForIosWeb: 5,
-      backgroundColor: Colors.red,
-    textColor: color,
+      backgroundColor: color,
+    textColor: Colors.white,
     fontSize: 16.0,
   );
 }

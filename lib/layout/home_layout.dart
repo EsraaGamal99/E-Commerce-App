@@ -31,7 +31,6 @@ class HomeScreen extends StatelessWidget {
                 ),
                 onPressed: () {
                   CacheHelper.removeData(key: 'token');
-                  CacheHelper.removeData(key: 'onBoarding');
                   navigateAndFinish(context, LoginScreen());                 // navigateTo(context, SearchScreen(),);
                 },
               ),

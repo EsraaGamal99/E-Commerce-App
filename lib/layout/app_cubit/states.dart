@@ -1,4 +1,5 @@
  import 'package:shop_app/models/change_favorites_model.dart';
+import 'package:shop_app/models/login_model.dart';
 
 abstract class AppStates{}
 
@@ -39,3 +40,35 @@ abstract class AppStates{}
  final error;
   AppGetFavoritesErrorState(this.error);
  }
+
+ class AppLoadingGetUserDataState extends AppStates{}
+
+ class AppGetUserDataSuccessState extends AppStates{
+ final LoginModel loginModel;
+
+  AppGetUserDataSuccessState(this.loginModel);
+ }
+
+ class AppGetUserDataErrorState extends AppStates{
+
+  final error;
+  AppGetUserDataErrorState(this.error);
+ }
+
+
+ class AppLoadingUpdateUserDataState extends AppStates{}
+
+ class AppUpdateUserDataSuccessState extends AppStates{
+  final LoginModel loginModel;
+
+  AppUpdateUserDataSuccessState(this.loginModel);
+ }
+
+ class AppUpdateUserDataErrorState extends AppStates{
+
+  final error;
+  AppUpdateUserDataErrorState(this.error);
+ }
+
+
+

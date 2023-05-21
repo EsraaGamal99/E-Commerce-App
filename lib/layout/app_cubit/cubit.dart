@@ -4,6 +4,7 @@ import 'package:shop_app/layout/app_cubit/states.dart';
 import 'package:shop_app/models/change_favorites_model.dart';
 import 'package:shop_app/models/favorites_model.dart';
 import 'package:shop_app/models/home_model.dart';
+import 'package:shop_app/models/login_model.dart';
 import 'package:shop_app/modules/categories/categories_screen.dart';
 import 'package:shop_app/modules/favorites/favorites_screen.dart';
 import 'package:shop_app/modules/products/products_screen.dart';
@@ -82,12 +83,10 @@ class AppCubit extends Cubit<AppStates> {
       if (!changeFavoritesModel.status) {
         favorites[productId] = !favorites[productId];
         emit(AppSuccessFavoritesState(changeFavoritesModel));
-      }else
-      {
+      } else {
         getFavorites();
         emit(AppSuccessFavoritesState(changeFavoritesModel));
       }
-
     }).catchError((error) {
       print(error.toString());
       favorites[productId] = !favorites[productId];
@@ -96,6 +95,7 @@ class AppCubit extends Cubit<AppStates> {
   }
 
   FavoritesModel favoritesModel;
+
   void getFavorites() {
     emit(AppLoadingGetFavoritesState());
 
@@ -103,7 +103,6 @@ class AppCubit extends Cubit<AppStates> {
       url: Favorites,
       token: tokenID,
     ).then((value) {
-
       favoritesModel = FavoritesModel.fromJson(value.data);
       emit(AppGetFavoritesSuccessState());
     }).catchError((error) {
@@ -111,4 +110,49 @@ class AppCubit extends Cubit<AppStates> {
       emit(AppGetFavoritesErrorState(error.toString()));
     });
   }
+
+  LoginModel userDataModel;
+
+  void getUserData() {
+    emit(AppLoadingGetUserDataState());
+
+    DioHelper.getData(
+      url: PROFILE,
+      token: tokenID,
+    ).then((value) {
+      userDataModel = LoginModel.fromJson(value.data);
+
+      emit(AppGetUserDataSuccessState(userDataModel));
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppGetUserDataErrorState(error.toString()));
+    });
+  }
+
+  //LoginModel userDataModel;
+  void putUserData({
+    @required String name,
+    @required String email,
+    @required String phone,
+  }) {
+    emit(AppLoadingUpdateUserDataState());
+
+    DioHelper.putData(
+      url: UPDATE_PROFILE,
+      token: tokenID,
+      data:{
+        'name':name,
+        'email':email,
+        'phone':phone,
+      },
+    ).then((value) {
+      userDataModel = LoginModel.fromJson(value.data);
+      emit(AppUpdateUserDataSuccessState(userDataModel));
+    }).catchError((error) {
+      print(error.toString());
+      emit(AppUpdateUserDataErrorState(error.toString()));
+    });
+  }
+
+
 }

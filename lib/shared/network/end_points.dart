@@ -1,9 +1,13 @@
 const LOGIN = 'login';
 
-const REGISTER = 'register';
-
 const HOME = 'home';
 
 const Categories = 'categories';
 
 const Favorites = 'favorites';
+
+const PROFILE = 'profile';
+
+const REGISTER = 'register';
+
+const UPDATE_PROFILE = 'update-profile';

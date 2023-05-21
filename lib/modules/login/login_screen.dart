@@ -25,11 +25,13 @@ class LoginScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is LoginsSuccessState) {
             if (state.loginModel.status) {
+              tokenID = state.loginModel.data.token;
 
               CacheHelper.saveData(
                 key: 'token',
                 value: state.loginModel.data.token,
               ).then((value) {
+
                 tokenID = state.loginModel.data.token;
                 navigateAndFinish(
                   context,

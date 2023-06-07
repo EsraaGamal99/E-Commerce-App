@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:shop_app/models/home_model.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
 import '../../shared/components/components.dart';

@@ -12,6 +12,7 @@ import 'package:shop_app/modules/settings/settings_screen.dart';
 import 'package:shop_app/shared/network/remote/dio_helper.dart';
 
 import '../../models/categories_model.dart';
+import '../../models/search_model.dart';
 import '../../shared/components/constants.dart';
 import '../../shared/network/end_points.dart';
 
@@ -74,6 +75,8 @@ class AppCubit extends Cubit<AppStates> {
   void changeFavorite(int productId) {
     favorites[productId] = !favorites[productId];
     emit(AppFavoritesState());
+    if(favorites[productId]==null)
+      emit(AppFavoritesLoadingState());
 
     DioHelper.postData(url: Favorites, token: tokenID, data: {
       'product_id': productId,
@@ -154,5 +157,21 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
+  SearchModel searchModel;
 
+  void search(String text) {
+    emit(SearchLoadingState());
+
+    DioHelper.postData(
+      url: SEARCH,
+      token: tokenID,
+      data: {'text': text},
+    ).then((value) {
+      searchModel = SearchModel.fromJson(value.data);
+      emit(SearchSuccessState());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SearchErrorState());
+    });
+  }
 }

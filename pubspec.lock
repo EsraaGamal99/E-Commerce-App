@@ -10,7 +10,7 @@ packages:
     source: hosted
     version: "2.10.0"
   bloc:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: bloc
       sha256: "6f1b87b6eca9041d5672b6e29273cd1594db48ebb66fd2471066e9f3c3a516bd"
@@ -26,7 +26,7 @@ packages:
     source: hosted
     version: "2.1.1"
   carousel_slider:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: carousel_slider
       sha256: "1748fe87707dc835300f24f59c0882bbd2131e0602bf9385ae61c79a178dd2a6"
@@ -58,7 +58,7 @@ packages:
     source: hosted
     version: "1.17.0"
   conditional_builder:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: conditional_builder
       sha256: e9e388550c03c03b65adc304c95943811e5b53f5339c62cec1982cf4602e5c70
@@ -74,7 +74,7 @@ packages:
     source: hosted
     version: "1.0.5"
   dio:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: dio
       sha256: "7d328c4d898a61efc3cd93655a0955858e29a0aa647f0f9e02d59b3bb275e2e8"
@@ -111,7 +111,7 @@ packages:
     source: sdk
     version: "0.0.0"
   flutter_bloc:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: flutter_bloc
       sha256: cdd1351ced09eeb46cfa7946e095b7679344af927415ca9cd972928fa6d5b23f
@@ -129,7 +129,7 @@ packages:
     source: sdk
     version: "0.0.0"
   fluttertoast:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: fluttertoast
       sha256: "2f9c4d3f4836421f7067a28f8939814597b27614e021da9d63e5d3fb6e212d25"
@@ -249,7 +249,7 @@ packages:
     source: hosted
     version: "6.0.5"
   shared_preferences:
-    dependency: "direct dev"
+    dependency: "direct main"
     description:
       name: shared_preferences
       sha256: "16d3fb6b3692ad244a695c0183fca18cf81fd4b821664394a781de42386bf022"

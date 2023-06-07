@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 
+import '../../layout/app_cubit/cubit.dart';
+import '../style/colors.dart';
+
 Widget defaultTextButton({
   @required Function onPressed,
   @required String text,
@@ -58,7 +61,7 @@ void navigateAndFinish(context, widget) {
       MaterialPageRoute(
         builder: (context) => widget,
       ),
-          (route) => false);
+      (route) => false);
 }
 
 Widget defaultFormField({
@@ -91,28 +94,150 @@ Widget defaultFormField({
         ),
         suffixIcon: suffix != null
             ? IconButton(
-          onPressed: suffixPressed,
-          icon: Icon(
-            suffix,
-          ),
-        )
+                onPressed: suffixPressed,
+                icon: Icon(
+                  suffix,
+                ),
+              )
             : null,
         border: OutlineInputBorder(),
       ),
     );
 
-void showToast({
-  @required String msg,
-  @required color
-}
-    ){
+void showToast({@required String msg, @required color}) {
   Fluttertoast.showToast(
-      msg: msg,
-      toastLength: Toast.LENGTH_LONG,
-      gravity: ToastGravity.BOTTOM,
-      timeInSecForIosWeb: 5,
-      backgroundColor: color,
+    msg: msg,
+    toastLength: Toast.LENGTH_LONG,
+    gravity: ToastGravity.BOTTOM,
+    timeInSecForIosWeb: 5,
+    backgroundColor: color,
     textColor: Colors.white,
     fontSize: 16.0,
   );
 }
+
+Widget buildListItem(
+  model,
+  context, {
+  bool isOldPrice = true,
+  bool isFavorite = true,
+}) =>
+    Padding(
+      padding: const EdgeInsets.all(20.0),
+      child: Container(
+        height: 120.0,
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: 120.0,
+              height: 120.0,
+              child: Stack(
+                alignment: AlignmentDirectional.bottomStart,
+                children: [
+                  Image(
+                    image: NetworkImage(model.image),
+                    width: 120.0,
+                    height: 120.0,
+                    fit: BoxFit.cover,
+                  ),
+                  if (model.discount != 0 && isOldPrice)
+                    Container(
+                      color: Colors.redAccent,
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                          horizontal: 5.0,
+                        ),
+                        child: Text(
+                          'DISCOUNT',
+                          style: TextStyle(
+                            fontSize: 8.0,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
+                    ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 10.0,
+            ),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    model.name,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      height: 1.3,
+                    ),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Text('${model.price.round()}',
+                          style: TextStyle(
+                            color: defaultColor,
+                            fontSize: 12.0,
+                          )),
+                      SizedBox(
+                        width: 10.0,
+                      ),
+                      if (model.discount != 0 && isOldPrice)
+                        Text(
+                          '${model.oldPrice}',
+                          style: TextStyle(
+                            color: Colors.redAccent,
+                            fontSize: 12.0,
+                            decoration: TextDecoration.lineThrough,
+                          ),
+                        ),
+                      Spacer(),
+                           IconButton(
+                             icon: CircleAvatar(
+                               backgroundColor:
+                               AppCubit.get(context).favorites[model.id]
+                                   ? favColor
+                                   : defaultColor,
+                               radius: 15.0,
+                               child: Icon(
+                                 Icons.favorite_border,
+                                 color: Colors.white,
+                                 size: 17.0,
+                               ),
+                             ),
+                        onPressed: () {
+                            AppCubit.get(context).changeFavorite(model.id);
+                        },
+
+                      ),
+
+                        //     IconButton(
+                        //   onPressed: () {
+                        //     AppCubit.get(context).changeFavorite(model.id);
+                        //   },
+                        //   icon: CircleAvatar(
+                        //     backgroundColor:
+                        //     AppCubit.get(context).favorites[model.id]
+                        //         ? favColor
+                        //         : defaultColor,
+                        //     radius: 15.0,
+                        //     child: Icon(
+                        //       Icons.favorite_border,
+                        //       color: Colors.white,
+                        //       size: 17.0,
+                        //     ),
+                        //   ),
+                        // ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );

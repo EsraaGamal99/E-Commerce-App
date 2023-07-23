@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
 class HomeModel {
-  bool status;
-  DataHomeModel data;
+  bool? status;
+  DataHomeModel? data;
 
   HomeModel.FromJson(Map<String , dynamic> json)
   {
@@ -29,8 +29,8 @@ class DataHomeModel{
 }
 
 class BannerModel{
-  int id;
-  String image;
+  int? id;
+  String? image;
   final String bannerImage ='';
 
   BannerModel.FromJson(Map<String , dynamic> json){
@@ -42,14 +42,14 @@ class BannerModel{
 
 class ProductModel{
 
-    int id;
+    int? id;
     dynamic price;
     dynamic oldPrice;
     dynamic discount;
-    String image;
-    String name;
-    bool inFavorites;
-    bool inCart;
+    String? image;
+    String? name;
+    bool? inFavorites;
+    bool? inCart;
 
     ProductModel.FromJson(Map<String, dynamic> json)
     {
@@ -69,6 +69,6 @@ class BannerImagesModel {
   final String image;
 
   BannerImagesModel({
-    @required this.image,
+    required this.image,
   });
 }

@@ -5,19 +5,19 @@ import '../../layout/app_cubit/cubit.dart';
 import '../style/colors.dart';
 
 Widget defaultTextButton({
-  @required Function onPressed,
-  @required String text,
+  required Function onPressed,
+  required String text,
 }) =>
     TextButton(
-      onPressed: onPressed,
+      onPressed: onPressed(),
       child: Text(
         text.toUpperCase(),
       ),
     );
 
 Widget defaultButton({
-  @required Function onPressed,
-  @required String text,
+  required Function onPressed,
+  required String text,
   double Width = double.infinity,
   double height = 50.0,
   Color backgroundColor = Colors.blueGrey,
@@ -65,17 +65,17 @@ void navigateAndFinish(context, widget) {
 }
 
 Widget defaultFormField({
-  @required TextEditingController controller,
-  @required TextInputType type,
-  Function onSubmit,
-  Function onChange,
-  Function onTap,
+  required TextEditingController controller,
+  required TextInputType type,
+ Function(String)? onSubmit,
+   onChange,
+   onTap,
   bool isPassword = false,
-  @required Function validate,
-  @required String label,
-  @required IconData prefix,
-  IconData suffix,
-  Function suffixPressed,
+  required String? Function(String?)? validate,
+  required String label,
+  required IconData prefix,
+  IconData? suffix,
+ void Function()?  suffixPressed,
   bool isClickable = true,
 }) =>
     TextFormField(
@@ -104,7 +104,7 @@ Widget defaultFormField({
       ),
     );
 
-void showToast({@required String msg, @required color}) {
+void showToast({required String msg, required color}) {
   Fluttertoast.showToast(
     msg: msg,
     toastLength: Toast.LENGTH_LONG,
@@ -120,7 +120,6 @@ Widget buildListItem(
   model,
   context, {
   bool isOldPrice = true,
-  bool isFavorite = true,
 }) =>
     Padding(
       padding: const EdgeInsets.all(20.0),
@@ -136,7 +135,7 @@ Widget buildListItem(
                 alignment: AlignmentDirectional.bottomStart,
                 children: [
                   Image(
-                    image: NetworkImage(model.image),
+                    image: NetworkImage(model.image!),
                     width: 120.0,
                     height: 120.0,
                     fit: BoxFit.cover,
@@ -199,7 +198,7 @@ Widget buildListItem(
                            IconButton(
                              icon: CircleAvatar(
                                backgroundColor:
-                               AppCubit.get(context).favorites[model.id]
+                               AppCubit.get(context).favorites[model.id!]!
                                    ? favColor
                                    : defaultColor,
                                radius: 15.0,
@@ -210,7 +209,7 @@ Widget buildListItem(
                                ),
                              ),
                         onPressed: () {
-                            AppCubit.get(context).changeFavorite(model.id);
+                            AppCubit.get(context).changeFavorite(model.id!);
                         },
 
                       ),

@@ -1,6 +1,7 @@
-import 'package:conditional_builder/conditional_builder.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:shop_app/layout/app_cubit/cubit.dart';
 import 'package:shop_app/layout/home_layout.dart';
 
 import '../../shared/components/components.dart';
@@ -24,15 +25,16 @@ class LoginScreen extends StatelessWidget {
       child: BlocConsumer<LoginCubit, LoginStates>(
         listener: (context, state) {
           if (state is LoginsSuccessState) {
-            if (state.loginModel.status) {
-              tokenID = state.loginModel.data.token;
+            if (state.loginModel.status!) {
+              AppCubit.get(context).getUserData();
+              tokenID = state.loginModel.data!.token!;
 
               CacheHelper.saveData(
                 key: 'token',
-                value: state.loginModel.data.token,
+                value: state.loginModel.data!.token,
               ).then((value) {
 
-                tokenID = state.loginModel.data.token;
+                tokenID = state.loginModel.data!.token!;
                 navigateAndFinish(
                   context,
                   HomeScreen(),
@@ -42,7 +44,7 @@ class LoginScreen extends StatelessWidget {
               print(state.loginModel.message);
 
               showToast(
-                msg: state.loginModel.message,
+                msg: state.loginModel.message!,
                 color: Colors.red,
               );
             }
@@ -62,13 +64,13 @@ class LoginScreen extends StatelessWidget {
                       children: [
                         Text(
                           'LOGIN',
-                          style: Theme.of(context).textTheme.headlineMedium.copyWith(
+                          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                             color: Colors.black,
                           ),
                         ),
                         Text(
                           'Login now to browse our hot offers',
-                          style: Theme.of(context).textTheme.bodyLarge.copyWith(
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             color: Colors.grey,
                           ),
                         ),
@@ -79,10 +81,11 @@ class LoginScreen extends StatelessWidget {
                         defaultFormField(
                           controller: emailController,
                           type: TextInputType.emailAddress,
-                          validate: (String value) {
-                            if (value.isEmpty) {
+                          validate: (String? value) {
+                            if (value!.isEmpty) {
                               return 'please enter your email address';
                             }
+                            return null;
                           },
                           label: 'Email Address',
                           prefix: Icons.email_outlined,
@@ -96,7 +99,7 @@ class LoginScreen extends StatelessWidget {
                           type: TextInputType.visiblePassword,
                           suffix: LoginCubit.get(context).suffix,
                           onSubmit: (value) {
-                            if (formKey.currentState.validate()) {
+                            if (formKey.currentState!.validate()) {
                               LoginCubit.get(context).userLogin(
                                 email: emailController.text,
                                 password: passwordController.text,
@@ -108,10 +111,11 @@ class LoginScreen extends StatelessWidget {
                             LoginCubit.get(context)
                                 .changePasswordVisibility();
                           },
-                          validate: (String value) {
-                            if (value.isEmpty) {
+                          validate: (String? value) {
+                            if (value!.isEmpty) {
                               return 'password is too short';
                             }
+                            return null;
                           },
                           label: 'Password',
                           prefix: Icons.lock_outline,
@@ -123,7 +127,7 @@ class LoginScreen extends StatelessWidget {
                           condition: state is! LoginLoadingState,
                           builder: (context) => defaultButton(
                            onPressed:  () {
-                              if (formKey.currentState.validate()) {
+                              if (formKey.currentState!.validate()) {
                                 LoginCubit.get(context).userLogin(
                                   email: emailController.text,
                                   password: passwordController.text,

@@ -1,4 +1,4 @@
-import 'package:conditional_builder/conditional_builder.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/modules/register/register_cubit/cubit.dart';
@@ -28,15 +28,15 @@ class RegisterScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is RegistersSuccessState)
           {
-            if (state.loginModel.status) {
+            if (state.loginModel.status!) {
              // tokenID = state.loginModel.data.token;
 
               CacheHelper.saveData(
                 key: 'token',
-                value: state.loginModel.data.token,
+                value: state.loginModel.data!.token,
               ).then((value) {
 
-                tokenID = state.loginModel.data.token;
+                tokenID = state.loginModel.data!.token!;
                 navigateAndFinish(
                   context,
                   HomeScreen(),
@@ -46,7 +46,7 @@ class RegisterScreen extends StatelessWidget {
               print(state.loginModel.message);
 
               showToast(
-                msg: state.loginModel.message,
+                msg: state.loginModel.message!,
                 color: Colors.red,
               );
             }
@@ -66,13 +66,13 @@ class RegisterScreen extends StatelessWidget {
                       children: [
                         Text(
                           'REGISTER',
-                          style: Theme.of(context).textTheme.headlineMedium.copyWith(
+                          style: Theme.of(context).textTheme.headlineMedium!.copyWith(
                             color: Colors.black,
                           ),
                         ),
                         Text(
                           'Register now to browse our hot offers',
-                          style: Theme.of(context).textTheme.bodyLarge.copyWith(
+                          style: Theme.of(context).textTheme.bodyLarge!.copyWith(
                             color: Colors.grey,
                           ),
                         ),
@@ -84,10 +84,11 @@ class RegisterScreen extends StatelessWidget {
                         defaultFormField(
                           controller: nameController,
                           type: TextInputType.name,
-                          validate: (String value) {
-                            if (value.isEmpty) {
+                          validate:(String? value) {
+                            if (value!.isEmpty) {
                               return 'please enter your name';
                             }
+                            return null;
                           },
                           label: 'User Name',
                           prefix: Icons.person,
@@ -101,10 +102,11 @@ class RegisterScreen extends StatelessWidget {
                         defaultFormField(
                           controller: emailController,
                           type: TextInputType.emailAddress,
-                          validate: (String value) {
-                            if (value.isEmpty) {
+                          validate: (String? value) {
+                            if (value!.isEmpty) {
                               return 'please enter your email address';
                             }
+                            return null;
                           },
                           label: 'Email Address',
                           prefix: Icons.email_outlined,
@@ -123,10 +125,11 @@ class RegisterScreen extends StatelessWidget {
                             RegisterCubit.get(context)
                                 .changePasswordVisibility();
                           },
-                          validate: (String value) {
-                            if (value.isEmpty) {
+                          validate: (String? value) {
+                            if (value!.isEmpty) {
                               return 'password is too short';
                             }
+                            return null;
                           },
                           label: 'Password',
                           prefix: Icons.lock_outline,
@@ -140,10 +143,11 @@ class RegisterScreen extends StatelessWidget {
                         defaultFormField(
                           controller: phoneController,
                           type: TextInputType.phone,
-                          validate: (String value) {
-                            if (value.isEmpty) {
+                          validate: (String? value) {
+                            if (value!.isEmpty) {
                               return 'please enter your phone number';
                             }
+                            return null;
                           },
                           label: 'Phone',
                           prefix: Icons.phone,
@@ -157,7 +161,7 @@ class RegisterScreen extends StatelessWidget {
                           builder: (context) => defaultButton(
                             onPressed:  () {
 
-                              if (formKey.currentState.validate()) {
+                              if (formKey.currentState!.validate()) {
                                 RegisterCubit.get(context).userRegister(
                                   name: nameController.text,
                                   email: emailController.text,

@@ -10,7 +10,6 @@ import 'package:shop_app/shared/style/themes.dart';
 import 'layout/home_layout.dart';
 import 'modules/login/login_screen.dart';
 import 'modules/on_boarding/on_boarding_screen.dart';
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 
@@ -23,7 +22,7 @@ void main() async{
 
   Widget widget;
 
-  bool onBoarding = CacheHelper.getData(key: 'onBoarding');
+  var onBoarding = CacheHelper.getData(key: 'onBoarding');
   tokenID = CacheHelper.getData(key: 'token');
 if(tokenID != null)
   print('THE TOKEN ////////////'+ tokenID);
@@ -45,7 +44,7 @@ class MyApp extends StatelessWidget {
   final Widget startWidget;
 
   MyApp({
-    this.startWidget,
+    required this.startWidget,
   });
 
   @override

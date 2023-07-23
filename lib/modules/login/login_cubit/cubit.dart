@@ -11,11 +11,11 @@ class LoginCubit extends Cubit<LoginStates> {
 
   static LoginCubit get(context) => BlocProvider.of(context);
 
-  LoginModel loginModel;
+  LoginModel? loginModel;
 
   void userLogin({
-    @required String email,
-    @required String password,
+    required String email,
+    required String password,
   })
   {
     emit(LoginLoadingState());
@@ -31,7 +31,7 @@ class LoginCubit extends Cubit<LoginStates> {
     {
       print(value.data);
       loginModel = LoginModel.fromJson(value.data);
-      emit(LoginsSuccessState(loginModel));
+      emit(LoginsSuccessState(loginModel!));
     }).catchError((error)
     {
       print(error.toString());

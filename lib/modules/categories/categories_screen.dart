@@ -14,9 +14,9 @@ class CategoriesScreen extends StatelessWidget {
       builder: (context, state) {
         return ListView.separated(
           physics: BouncingScrollPhysics(),
-            itemBuilder: (context, index) => buildCategoryItem(AppCubit.get(context).categoriesModel.data.dataModel[index],),
+            itemBuilder: (context, index) => buildCategoryItem(AppCubit.get(context).categoriesModel!.data!.dataModel[index],),
             separatorBuilder: (context, index) => Divider(),
-            itemCount: AppCubit.get(context).categoriesModel.data.dataModel.length,);
+            itemCount: AppCubit.get(context).categoriesModel!.data!.dataModel.length,);
       }, );
   }
 }
@@ -24,12 +24,12 @@ Widget buildCategoryItem(DataModel model) => Padding(
   padding: const EdgeInsets.all(20.0),
   child: Row(
     children: [
-      Image(image: NetworkImage(model.image),
+      Image(image: NetworkImage(model.image!),
           height: 90.0,
           width: 90.0,
       fit: BoxFit.cover),
       SizedBox(width: 10.0,),
-      Text(model.name,
+      Text(model.name!,
       style: TextStyle(
         fontWeight: FontWeight.bold,
         fontSize: 18.0,

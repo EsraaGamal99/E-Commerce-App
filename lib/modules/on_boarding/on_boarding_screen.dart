@@ -175,8 +175,8 @@ class BoardingModel {
   final String image;
 
   BoardingModel({
-    @required this.title,
-    @required this.body,
-    @required this.image,
+    required this.title,
+    required this.body,
+    required this.image,
   });
 }

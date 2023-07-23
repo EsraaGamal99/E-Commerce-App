@@ -72,10 +72,6 @@ abstract class AppStates{}
   AppUpdateUserDataErrorState(this.error);
  }
 
- class SearchLoadingState extends AppStates{}
 
- class SearchSuccessState extends AppStates{}
-
- class SearchErrorState extends AppStates{}
 
 

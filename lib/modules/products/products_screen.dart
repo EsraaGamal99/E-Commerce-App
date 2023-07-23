@@ -1,5 +1,5 @@
 import 'package:carousel_slider/carousel_slider.dart';
-import 'package:conditional_builder/conditional_builder.dart';
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shop_app/layout/app_cubit/cubit.dart';
@@ -17,8 +17,8 @@ class ProductsScreen extends StatelessWidget {
     return BlocConsumer<AppCubit, AppStates>(
       listener: (context, state) {
         if (state is AppSuccessFavoritesState) {
-          if (!state.model.status) {
-            showToast(msg: state.model.message, color: Colors.red);
+          if (!(state.model.status!)) {
+            showToast(msg: state.model.message!, color: Colors.red);
           }
         }
       },
@@ -26,7 +26,7 @@ class ProductsScreen extends StatelessWidget {
         return ConditionalBuilder(
           condition: (cubit.homeModel != null && cubit.categoriesModel != null),
           builder: (context) =>
-              productsBuilder(cubit.homeModel, cubit.categoriesModel, context),
+              productsBuilder(cubit.homeModel!, cubit.categoriesModel!, context),
           fallback: (context) => Center(child: CircularProgressIndicator()),
         );
       },
@@ -61,7 +61,7 @@ Widget productsBuilder(
               autoPlay: true,
               autoPlayAnimationDuration: Duration(seconds: 1),
               autoPlayInterval: Duration(seconds: 3),
-              height: 250.0,
+              height: 200.0,
               initialPage: 0,
               enableInfiniteScroll: true,
               reverse: false,
@@ -91,12 +91,12 @@ Widget productsBuilder(
                   child: ListView.separated(
                     scrollDirection: Axis.horizontal,
                     itemBuilder: (context, index) => categoriesItems(
-                      categoriesModel.data.dataModel[index],
+                      categoriesModel.data!.dataModel[index],
                     ),
                     separatorBuilder: (context, index) => SizedBox(
                       width: 10.0,
                     ),
-                    itemCount: categoriesModel.data.dataModel.length,
+                    itemCount: categoriesModel.data!.dataModel.length,
                   ),
                 ),
                 SizedBox(
@@ -122,8 +122,8 @@ Widget productsBuilder(
               crossAxisSpacing: 1.0,
               childAspectRatio: 1 / 1.56,
               children: List.generate(
-                model.data.products.length,
-                (index) => buildProduct(model.data.products[index], context),
+                model.data!.products.length,
+                (index) => buildProduct(model.data!.products[index], context),
               ),
             ),
           ),
@@ -135,7 +135,7 @@ Widget categoriesItems(DataModel model) => Stack(
       alignment: AlignmentDirectional.bottomStart,
       children: [
         Image(
-          image: NetworkImage(model.image),
+          image: NetworkImage(model.image!),
           height: 100.0,
           width: 100.0,
         ),
@@ -144,7 +144,7 @@ Widget categoriesItems(DataModel model) => Stack(
             0.8,
           ),
           child: Text(
-            model.name,
+            model.name!,
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
             textAlign: TextAlign.center,
@@ -165,7 +165,7 @@ Widget buildProduct(ProductModel model, context) => Container(
             alignment: AlignmentDirectional.bottomStart,
             children: [
               Image(
-                image: NetworkImage(model.image),
+                image: NetworkImage(model.image!),
                 width: double.infinity,
                 height: 180.0,
               ),
@@ -222,11 +222,11 @@ Widget buildProduct(ProductModel model, context) => Container(
                     Spacer(),
                     IconButton(
                       onPressed: () {
-                        AppCubit.get(context).changeFavorite(model.id);
+                        AppCubit.get(context).changeFavorite(model.id!);
                       },
                       icon: CircleAvatar(
                         backgroundColor:
-                            AppCubit.get(context).favorites[model.id]
+                            AppCubit.get(context).favorites[model.id]!
                                 ? favColor
                                 : defaultColor,
                         radius: 15.0,

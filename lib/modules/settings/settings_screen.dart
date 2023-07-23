@@ -1,10 +1,10 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:shop_app/layout/app_cubit/cubit.dart';
 import 'package:shop_app/layout/app_cubit/states.dart';
 import 'package:shop_app/shared/components/components.dart';
 import 'package:shop_app/shared/components/constants.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:conditional_builder/conditional_builder.dart';
 
 
 class SettingsScreen extends StatelessWidget {
@@ -19,9 +19,9 @@ class SettingsScreen extends StatelessWidget {
       listener: (context, state) {},
       builder: (context, state) {
         var model = AppCubit.get(context).userDataModel;
-        nameController.text = model.data.name;
-        emailController.text = model.data.email;
-        phoneController.text = model.data.phone;
+        nameController.text = model!.data!.name!;
+        emailController.text = model!.data!.email!;
+        phoneController.text = model!.data!.phone!;
 
         return ConditionalBuilder(
           condition: AppCubit.get(context).userDataModel != null,
@@ -41,8 +41,8 @@ class SettingsScreen extends StatelessWidget {
                     defaultFormField(
                       controller: nameController,
                       type: TextInputType.name,
-                      validate: (String value) {
-                        if (value.isEmpty) {
+                      validate: (String? value) {
+                        if (value!.isEmpty) {
                           return 'Name must not br empty';
                         }
                           return null;
@@ -56,8 +56,8 @@ class SettingsScreen extends StatelessWidget {
                     defaultFormField(
                       controller: emailController,
                       type: TextInputType.emailAddress,
-                      validate: (String value) {
-                        if (value.isEmpty) {
+                      validate: (String? value) {
+                        if (value!.isEmpty) {
                           return 'Email must not br empty';
                         }
                           return null;
@@ -71,8 +71,8 @@ class SettingsScreen extends StatelessWidget {
                     defaultFormField(
                       controller: phoneController,
                       type: TextInputType.phone,
-                      validate: (String value) {
-                        if (value.isEmpty) {
+                      validate: (String? value) {
+                        if (value!.isEmpty) {
                           return 'Phone number must not br empty';
                         }
                           return null;

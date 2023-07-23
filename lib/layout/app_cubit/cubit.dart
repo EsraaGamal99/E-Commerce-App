@@ -31,23 +31,29 @@ class AppCubit extends Cubit<AppStates> {
 
   void changeNavBarIndex(index) {
     currentIndex = index;
+    if (index == 2) getFavorites();
     emit(ChangeBottomNavBarState());
   }
 
-  HomeModel homeModel;
-  Map<int, bool> favorites = {};
+  HomeModel? homeModel;
+  Map<int?, bool?> favorites = {};
 
   void getHomeData() {
     emit(AppLoadingHomeState());
-
-    DioHelper.getData(url: HOME, token: tokenID).then((value) {
+    DioHelper.getData(
+      url: HOME,
+      token: tokenID,
+    ).then((value) {
       homeModel = HomeModel.FromJson(value.data);
-      homeModel.data.products.forEach((element) {
+      // print(homeModel!.data!.banners[0].image);
+      // print(homeModel!.data!.banners[0].id);
+      // print(homeModel!.status);
+      homeModel!.data!.products.forEach((element) {
         favorites.addAll({
           element.id: element.inFavorites,
         });
+        //print(favorites.toString());
       });
-      print(favorites.toString());
       emit(AppSuccessHomeState());
     }).catchError((error) {
       print(error.toString());
@@ -55,7 +61,7 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  CategoriesModel categoriesModel;
+  CategoriesModel? categoriesModel;
 
   void getCategoriesData() {
     DioHelper.getData(
@@ -70,34 +76,33 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  ChangeFavoritesModel changeFavoritesModel;
+  ChangeFavoritesModel? changeFavoritesModel;
 
   void changeFavorite(int productId) {
-    favorites[productId] = !favorites[productId];
+    favorites[productId] = !favorites[productId]!;
     emit(AppFavoritesState());
-    if(favorites[productId]==null)
-      emit(AppFavoritesLoadingState());
+    if (favorites[productId] == null) emit(AppFavoritesLoadingState());
 
     DioHelper.postData(url: Favorites, token: tokenID, data: {
       'product_id': productId,
     }).then((value) {
       changeFavoritesModel = ChangeFavoritesModel.fromJson(value.data);
       print(value.data);
-      if (!changeFavoritesModel.status) {
-        favorites[productId] = !favorites[productId];
-        emit(AppSuccessFavoritesState(changeFavoritesModel));
+      if (!changeFavoritesModel!.status!) {
+        favorites[productId] = !favorites[productId]!;
+        emit(AppSuccessFavoritesState(changeFavoritesModel!));
       } else {
         getFavorites();
-        emit(AppSuccessFavoritesState(changeFavoritesModel));
+        emit(AppSuccessFavoritesState(changeFavoritesModel!));
       }
     }).catchError((error) {
       print(error.toString());
-      favorites[productId] = !favorites[productId];
+      favorites[productId] = !favorites[productId]!;
       emit(AppErrorFavoritesState(error.toString()));
     });
   }
 
-  FavoritesModel favoritesModel;
+  FavoritesModel? favoritesModel;
 
   void getFavorites() {
     emit(AppLoadingGetFavoritesState());
@@ -107,6 +112,11 @@ class AppCubit extends Cubit<AppStates> {
       token: tokenID,
     ).then((value) {
       favoritesModel = FavoritesModel.fromJson(value.data);
+      print(value.data);
+      print('1111111111111111111111111');
+      print(favoritesModel!.data);
+      print('1111111111111111111111111');
+      print(favoritesModel!.data!.data);
       emit(AppGetFavoritesSuccessState());
     }).catchError((error) {
       print(error.toString());
@@ -114,7 +124,7 @@ class AppCubit extends Cubit<AppStates> {
     });
   }
 
-  LoginModel userDataModel;
+  LoginModel? userDataModel;
 
   void getUserData() {
     emit(AppLoadingGetUserDataState());
@@ -125,7 +135,7 @@ class AppCubit extends Cubit<AppStates> {
     ).then((value) {
       userDataModel = LoginModel.fromJson(value.data);
 
-      emit(AppGetUserDataSuccessState(userDataModel));
+      emit(AppGetUserDataSuccessState(userDataModel!));
     }).catchError((error) {
       print(error.toString());
       emit(AppGetUserDataErrorState(error.toString()));
@@ -134,44 +144,27 @@ class AppCubit extends Cubit<AppStates> {
 
   //LoginModel userDataModel;
   void putUserData({
-    @required String name,
-    @required String email,
-    @required String phone,
+    required String name,
+    required String email,
+    required String phone,
   }) {
     emit(AppLoadingUpdateUserDataState());
 
     DioHelper.putData(
       url: UPDATE_PROFILE,
       token: tokenID,
-      data:{
-        'name':name,
-        'email':email,
-        'phone':phone,
+      data: {
+        'name': name,
+        'email': email,
+        'phone': phone,
       },
     ).then((value) {
       userDataModel = LoginModel.fromJson(value.data);
-      emit(AppUpdateUserDataSuccessState(userDataModel));
+      emit(AppUpdateUserDataSuccessState(userDataModel!));
     }).catchError((error) {
       print(error.toString());
       emit(AppUpdateUserDataErrorState(error.toString()));
     });
   }
 
-  SearchModel searchModel;
-
-  void search(String text) {
-    emit(SearchLoadingState());
-
-    DioHelper.postData(
-      url: SEARCH,
-      token: tokenID,
-      data: {'text': text},
-    ).then((value) {
-      searchModel = SearchModel.fromJson(value.data);
-      emit(SearchSuccessState());
-    }).catchError((error) {
-      print(error.toString());
-      emit(SearchErrorState());
-    });
-  }
 }
